@@ -50,7 +50,7 @@ namespace MGM // My Group Manager
 		wiz::WizSmartPtr<T> value; // data
 		size_t order; // 0, 1, 2, ...
 	public:
-		explicit Item() : name(""), order(0) { } // chk name="", �޾� ���� ��!
+		explicit Item() : name(""), order(0) { } 
 		explicit Item(const std::string& name, const T& value=T(), const size_t order=0)
 			: name(name), order(order)
 		{
@@ -83,7 +83,7 @@ namespace MGM // My Group Manager
 	// ItemArray! name, (index, value)+ ?
 
 	template <class T>
-	class Group /// To Do Add �̵� ������, �̵� ���� ������.. // friend!!,�Ϲ������δ� get�� �����ϵ���, friend�� ���ؼ� set�� �����ϰ�?
+	class Group 
 	{
 	private:
 		size_t order;
@@ -102,7 +102,7 @@ namespace MGM // My Group Manager
 		int itemMemberN; // for binary search!
 		int groupMemberN; // for binary search!
 	public:
-		explicit Group() { } // chk!! name = "", int =0, bool = false, �޾� ���� ��!
+		explicit Group() { } 
 		explicit Group(const std::string& name, const int itemMemberMax=0, const int groupMemberMax=0, const size_t order=0)
 			: name(name), itemMemberN(0), groupMemberN(0), order(0)
 		{
@@ -133,29 +133,14 @@ namespace MGM // My Group Manager
 		}
 		// bool isItemExist( const int index );
 		// bool isGroupExist( const int index );
-		bool getItem(const std::string& itemName, std::vector< wiz::WizSmartPtr< Item<T> > >& ptr)
+		bool getItem(const std::string& itemName, wiz::WizSmartPtr< Item<T> >& ptr)
 		{
 			bool isSuccess = isItemExist(itemName);
 
 			if (isSuccess) /// chk!!
 			{
 				const int index = searchItem(itemName);
-				
-				int nowLeftIndex = index;
-				int nowRightIndex = index;
-				bool chkLeft = false, chkRight = false;
-				while (false != linear_search(itemMember, index, -1))
-				{
-					--nowLeftIndex;
-				}
-				while (false != linerar_search(itemMember, index, +1))
-				{
-					++nowRightindex;
-				}
-
-				for (int i = nowLeftIndex; i <= nowRightIndex; ++i) {
-					ptr.push_back(itemMember[i]);
-				}
+				ptr = itemMember[index];
 			}
 
 			return isSuccess;
@@ -299,7 +284,7 @@ namespace MGM // My Group Manager
 
 			return isSuccess;
 		}
-		bool getGroup(const std::string& groupName, std::vector< wiz::WizSmartPtr< Group<T> > >& ptr)
+		bool getGroup(const std::string& groupName, wiz::WizSmartPtr< Group<T> >& ptr)
 		{
 			bool isSuccess = isGroupExist(groupName);
 
@@ -573,15 +558,15 @@ namespace MGM // My Group Manager
 		bool AddItemToGroup(const std::string& itemName, const std::string& groupName)
 		{
 			/// find Group - name is groupName
-			std::vector< wiz::WizSmartPtr< Group<T> > > groupTemp;
-			std::vector< wiz::WizSmartPtr< Item<T> > > itemTemp;
+			wiz::WizSmartPtr< Group<T> > groupTemp;
+			wiz::WizSmartPtr< Item<T> > itemTemp;
 			// get Group Ptr
 			if (rootGroup->getGroup(groupName, groupTemp)
 				&& rootGroup->getItem(itemName, itemTemp))
 			{
-				for (int i = 0; i < groupTemp.size(); ++i) {
-					groupTemp[i]->addItem(itemTemp);
-				}
+				//for (int i = 0; i < groupTemp.size(); ++i) {
+				groupTemp->addItem(itemTemp);
+				//}
 				return true;
 			}
 			else

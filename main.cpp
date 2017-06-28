@@ -42,9 +42,14 @@ int main(void)
 	test.NewItem("chk", 1);
 	test.NewItem("chk2", 2);
 
-	test.DoAll(Print<int>(), ALWAYS<int>());
-	test.DoAll(PlusOne(), ALWAYS<int>());
-	test.DoAll(Print<int>(), ALWAYS<int>());
+	test.NewGroup("test", 1, 1);
+
+	test.AddItemToGroup("chk", "test");
+	test.AddItemToGroup("chk2", "test");
+
+	test.Do("test", Print<int>(), ALWAYS<int>());
+	test.Do("test", PlusOne(), ALWAYS<int>());
+	test.Do("test", Print<int>(), ALWAYS<int>());
 
 	return 0;
 }
